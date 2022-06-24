@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "rinP6b1CaM6WhvbXkCh0n5GEAw/+7wMGkk/am07SE971wLzmRRNz9VohJOXEZ2sZRrH8MvWGliZVRnRp0pwldw==",
+  "dgSpecHash": "wI+c+Bz9aOf0TeiZ9GoJVF7FBZq1cS31q9Okc8J4V7fR7Kbka/skW9qNHeZieGgtup8oX5OU/Q3MC/folwtpUA==",
   "success": true,
   "projectFilePath": "/home/maxena/Desktop/Projects/Margs/Margs.Api/Margs.Api.csproj",
   "expectedPackageFiles": [
+    "/home/maxena/.nuget/packages/autofac/6.4.0/autofac.6.4.0.nupkg.sha512",
+    "/home/maxena/.nuget/packages/autofac.extensions.dependencyinjection/8.0.0/autofac.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "/home/maxena/.nuget/packages/autofacserilogintegration/5.0.0/autofacserilogintegration.5.0.0.nupkg.sha512",
     "/home/maxena/.nuget/packages/bcrypt.net-next/4.0.3/bcrypt.net-next.4.0.3.nupkg.sha512",
     "/home/maxena/.nuget/packages/humanizer.core/2.8.26/humanizer.core.2.8.26.nupkg.sha512",
     "/home/maxena/.nuget/packages/messagepack/2.1.152/messagepack.2.1.152.nupkg.sha512",

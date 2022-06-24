@@ -15,17 +15,15 @@ public static class DependencyInjection
 
     public static IServiceCollection Di(this IServiceCollection services, IConfiguration config)
     {
-        services.AddDbContext<PgDbContext>(_ =>
-            _.UseNpgsql("Host=localhost;Port=5432;Database=marg;Username=maxena;Password=CabinPwd;"));
-
-        services.AddSingleton<ILogger>(Log.Logger);
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
-        services.AddScoped<IAuthService, AuthService>();
         services.Configure<JwtSetting>(config.GetSection(Jwt));
-        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
-        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
+        // services.AddSingleton<ILogger>(Log.Logger);
+        // services.AddScoped<IAuthService, AuthService>();
+        // services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+        // services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         return services;
     }
 }

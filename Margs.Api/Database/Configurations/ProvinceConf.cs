@@ -14,8 +14,16 @@ public class ProvinceConf : IEntityTypeConfiguration<Province>
             .HasColumnName("ProvinceId");
 
         builder.Property(_ => _.Name)
-            .HasMaxLength(15)
-            .HasColumnType("varchar(15)");
+            .HasMaxLength(19)
+            .HasColumnType("varchar(19)");
+
+        builder.Property(_ => _.Slug)
+            .HasMaxLength(17)
+            .HasColumnType("varchar(17)");
+
+        builder.Property(_ => _.CreatedAt)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP")
+            .IsRequired();
 
         builder.HasMany(c => c.Cities)
             .WithOne(p => p.Province)

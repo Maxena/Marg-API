@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
+using Serilog.Events;
 using ILogger = Serilog.ILogger;
 
 namespace Margs.Api.Controllers
@@ -25,6 +26,17 @@ namespace Margs.Api.Controllers
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _auth = auth ?? throw new ArgumentNullException(nameof(auth));
+        }
+
+        [HttpGet("Test")]
+        [AllowAnonymous]
+        public IActionResult index()
+        {
+            _logger.Fatal("Fetal Test For Autofac Register Service");
+            if (_logger.IsEnabled(LogEventLevel.Fatal))
+                return Ok();
+
+            return BadRequest();
         }
 
         [HttpPost("Register")]

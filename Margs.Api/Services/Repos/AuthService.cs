@@ -21,49 +21,45 @@ public class AuthService : IAuthService
         _jwtTokenGenerator = jwtTokenGenerator ?? throw new ArgumentNullException(nameof(jwtTokenGenerator));
     }
 
-    // public async Task<RegisterUserRes> Register(RegisterUserReq req)
-    // {
-    //     var isUserAlreadyExist = await _pg.Users.AnyAsync(x => x.Mobile == req.Mobile || x.Email == req.Email);
-    //
-    //     if (isUserAlreadyExist)
-    //         throw new UserAlreadyExistException();
-    //
-    //     var registerNewUser = new User
-    //     {
-    //         FirstName = req.FirstName,
-    //         LastName = req.LastName,
-    //         Mobile = req.Mobile,
-    //         Email = req.Email,
-    //         Password = BCrypt.Net.BCrypt.HashPassword(req.Password),
-    //         Profile = req.Profile,
-    //         IsActive = false,
-    //         Gender = req.Gender,
-    //         CityId = req.CityId,
-    //         CreatedAt = _date.UtcNow,
-    //         UpdatedAt = null,
-    //         DeletedAt = null,
-    //         LastLoginDateTime = _date.UtcNow,
-    //     };
-    //
-    //     await _pg.Users.AddAsync(registerNewUser);
-    //
-    //     await _pg.SaveChangesAsync();
-    //
-    //     var token = _jwtTokenGenerator.GenerateToken(registerNewUser.Id, registerNewUser.Mobile,
-    //         new List<string> { "NewUser", "Newbie" });
-    //
-    //     if (token is null)
-    //         throw new JwtTokenFailedToRetrieve();
-    //
-    //     return new RegisterUserRes
-    //     {
-    //         UserId = registerNewUser.Id,
-    //         UserName = registerNewUser.Mobile,
-    //         Token = token
-    //     };
-    // }
-    public Task<RegisterUserRes> Register(RegisterUserReq req)
+    public async Task<RegisterUserRes> Register(RegisterUserReq req)
     {
-        throw new NotImplementedException();
+        var isUserAlreadyExist = await _pg.Users.AnyAsync(x => x.Mobile == req.Mobile || x.Email == req.Email);
+
+        if (isUserAlreadyExist)
+            throw new UserAlreadyExistException();
+
+        var registerNewUser = new User
+        {
+            FirstName = req.FirstName,
+            LastName = req.LastName,
+            Mobile = req.Mobile,
+            Email = req.Email,
+            Password = BCrypt.Net.BCrypt.HashPassword(req.Password),
+            Profile = req.Profile,
+            IsActive = false,
+            Gender = req.Gender,
+            CityId = req.CityId,
+            CreatedAt = _date.UtcNow,
+            UpdatedAt = null,
+            DeletedAt = null,
+            LastLoginDateTime = _date.UtcNow,
+        };
+
+        await _pg.Users.AddAsync(registerNewUser);
+
+        await _pg.SaveChangesAsync();
+
+        var token = _jwtTokenGenerator.GenerateToken(registerNewUser.Id, registerNewUser.Mobile,
+            new List<string> { "NewUser", "Newbie" });
+
+        if (token is null)
+            throw new JwtTokenFailedToRetrieve();
+
+        return new RegisterUserRes
+        {
+            UserId = registerNewUser.Id,
+            UserName = registerNewUser.Mobile,
+            Token = token
+        };
     }
 }

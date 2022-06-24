@@ -38,7 +38,8 @@ public class UserConf : IEntityTypeConfiguration<User>
             .HasColumnType("varchar(40)");
 
         builder.Property(_ => _.CreatedAt)
-            .HasDefaultValueSql("getdate()");
+            .HasDefaultValueSql("CURRENT_TIMESTAMP")
+            .IsRequired();
 
         builder.HasOne(c => c.City)
             .WithMany(u => u.Users)

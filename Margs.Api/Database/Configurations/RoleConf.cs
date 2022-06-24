@@ -24,6 +24,10 @@ public class RoleConf : IEntityTypeConfiguration<Role>
             .IsRequired()
             .HasColumnType("varchar(100)");
 
+        builder.Property(_ => _.CreatedAt)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP")
+            .IsRequired();
+        
         builder.HasMany(ur => ur.UserRoles)
             .WithOne(r => r.Role)
             .HasForeignKey(ur => ur.RoleId);

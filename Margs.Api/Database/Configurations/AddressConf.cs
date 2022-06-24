@@ -18,6 +18,10 @@ public class AddressConf : IEntityTypeConfiguration<Address>
             .HasMaxLength(50)
             .HasColumnType("varchar(50)");
 
+        builder.Property(_ => _.CreatedAt)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP")
+            .IsRequired();
+        
         builder.HasOne(u => u.User)
             .WithMany(a => a.Addresses)
             .HasForeignKey(u => u.UserId);

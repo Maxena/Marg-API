@@ -266,3 +266,6 @@
 /home/maxena/Desktop/Projects/Margs/Margs.Api/bin/Debug/net6.0/System.IdentityModel.Tokens.Jwt.dll
 /home/maxena/Desktop/Projects/Margs/Margs.Api/bin/Debug/net6.0/BCrypt.Net-Next.dll
 /home/maxena/Desktop/Projects/Margs/Margs.Api/bin/Debug/net6.0/Pluralize.NET.dll
+/home/maxena/Desktop/Projects/Margs/Margs.Api/bin/Debug/net6.0/Autofac.dll
+/home/maxena/Desktop/Projects/Margs/Margs.Api/bin/Debug/net6.0/Autofac.Extensions.DependencyInjection.dll
+/home/maxena/Desktop/Projects/Margs/Margs.Api/bin/Debug/net6.0/AutofacSerilogIntegration.dll
