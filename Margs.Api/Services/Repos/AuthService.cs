@@ -4,6 +4,7 @@ using Margs.Api.Exceptions;
 using Margs.Api.Requests.Authentication;
 using Margs.Api.Response;
 using Margs.Api.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Margs.Api.Services.Repos;
@@ -60,6 +61,44 @@ public class AuthService : IAuthService
             UserId = registerNewUser.Id,
             UserName = registerNewUser.Mobile,
             Token = token
+        };
+    }
+
+    public async Task<LoginUserRes> Login(LoginUserReq req)
+    {
+        var user = await (from
+                    users in _pg.Users
+                where req.UserName == users.Mobile
+                select users)
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
+
+        if (user is null)
+            throw new UserNotFoundException();
+
+        if (!BCrypt.Net.BCrypt.Verify(req.Password, user.Password))
+            throw new IncorrectPasswordException();
+
+        if (!user.IsActive)
+            throw new UserIsNotActiveException();
+
+        var token = _jwtTokenGenerator.GenerateToken(user.Id, user.Mobile, new List<string> { "loginUser" });
+
+        user.LastLoginDateTime = _date.UtcNow;
+
+        _pg.Users.Update(user);
+
+        await _pg.SaveChangesAsync();
+        
+        return new LoginUserRes
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Profile = user.Profile,
+            Email = user.Email,
+            CityId = user.CityId,
+            IsActive = user.IsActive,
+            Token = token,
         };
     }
 }

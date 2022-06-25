@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
+using Serilog.Debugging;
 using Serilog.Events;
 using ILogger = Serilog.ILogger;
 
@@ -47,18 +48,23 @@ namespace Margs.Api.Controllers
             {
                 var res = await _auth.Register(req);
 
-                if (res is not null)
-                    return Ok(res);
-
-                _logger.Error($"Register new user failed with req: {req} and the respone is null");
-
-                throw new RegisterFailedException("Register Failed");
+                return Ok(res);
             }
             catch (Exception e)
             {
-                _logger.Error($"Register Failed With Exception: {e}");
+                _logger.Error("Register Failed With Exception: {E}", e.ToString());
                 throw new RegisterFailedException();
             }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<LoginUserRes>> Login(LoginUserReq req)
+        {
+            LoginUserRes res = await _auth.Login(req);
+
+            if (res is not null)
+                return Ok(res);
+            throw new LoginFailedException(req.UserName, req.Password);
         }
     }
 }
