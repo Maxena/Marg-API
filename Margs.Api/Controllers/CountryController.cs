@@ -32,13 +32,25 @@ public class CountryController : ControllerBase
     [HttpGet("Province/List")]
     public async Task<IActionResult> ProvinceList()
     {
-        var provinceList = await (from
+        try
+        {
+            var provinceList = await (from
                     provinces in _db.Provinces
-                select provinces)
-            .ToListAsync();
-
-        return Ok(provinceList);
+                join cities in _db.Cities
+                    on provinces.Id equals cities.ProvinceId
+                select new
+                {
+                    ProvinceName = provinces.Name,
+                    ProvinceId = provinces.Id,
+                    CityName = cities.Name,
+                    CityId = cities.Id
+                }).AsNoTracking().Distinct().ToListAsync();
+            return Ok(provinceList);
+        }
+        catch (Exception e)
+        {
+            _logger.Error("Get Province List Failed with Exception {E}", e.ToString());
+            throw;
+        }
     }
-    
-    
 }

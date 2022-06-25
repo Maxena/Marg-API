@@ -6,6 +6,7 @@ using Margs.Api.Database.Context;
 using Margs.Api.Services;
 using Margs.Api.Services.DateTimeProviders;
 using Margs.Api.Services.Modules;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -55,15 +56,49 @@ try
     var app = builder.Build();
 
 
-    if (app.Environment.IsDevelopment())
+    app.UseSwagger();
+
+    app.UseSwaggerUI(c =>
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Marg API V1");
+        c.DocumentTitle = "Marg API";
+        c.DisplayRequestDuration();
+        c.EnableTryItOutByDefault();
+        //c.DocExpansion(DocExpansion.None);
+
+        //c.RoutePrefix = string.Empty;
+    });
+
+    if (app.Environment.IsDevelopment())
+        app.UseDeveloperExceptionPage();
+    else
+    {
+        app.UseDeveloperExceptionPage();
+        app.UseHsts();
     }
+
+    app.UseForwardedHeaders(new ForwardedHeadersOptions
+    {
+        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+    });
+
 
     app.UseSerilogRequestLogging();
 
     app.UseHttpsRedirection();
+
+    app.UseAuthentication();
+
+    app.UseResponseCaching();
+
+    app.UseResponseCompression();
+
+    app.UseRouting();
+
+    app.UseCors(x => x.AllowAnyMethod()
+        .AllowAnyHeader()
+        .SetIsOriginAllowed(s => true)
+        .AllowCredentials());
 
     app.UseAuthorization();
 

@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Margs.Api.Exceptions;
 using Margs.Api.Requests.Authentication;
 using Margs.Api.Response;
+using Margs.Api.Response.Authentication;
 using Margs.Api.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +42,12 @@ namespace Margs.Api.Controllers
             return BadRequest();
         }
 
+        /// <summary>
+        /// Register
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        /// <exception cref="RegisterFailedException"></exception>
         [HttpPost("Register")]
         [AllowAnonymous]
         public async Task<ActionResult<RegisterUserRes>> Register(RegisterUserReq req)
@@ -57,14 +65,123 @@ namespace Margs.Api.Controllers
             }
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Login
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        /// <exception cref="LoginFailedException"></exception>
+        [HttpPost("Login")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(LoginUserRes), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(LoginUserRes), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<LoginUserRes>> Login(LoginUserReq req)
         {
-            LoginUserRes res = await _auth.Login(req);
-
-            if (res is not null)
+            try
+            {
+                var res = await _auth.Login(req);
                 return Ok(res);
-            throw new LoginFailedException(req.UserName, req.Password);
+            }
+            catch (Exception e)
+            {
+                _logger.Fatal("Login Failed With Exception: {E}", e.ToString());
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Get List of All Users
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("User")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<List<UsersRes>>> GetUsers()
+        {
+            try
+            {
+                var res = await _auth.GetUsers();
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                _logger.Error("GetUsers Failed With Exception: {E}", e.ToString());
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Get User By ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("User/{id:guid}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<UsersRes>> GetUserById(Guid id)
+        {
+            try
+            {
+                var res = await _auth.GetUserById(id);
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                _logger.Error("GetUserById Failed With Exception: {E}", e.ToString());
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// GetRoles
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Role")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<List<RoleRes>>> Roles()
+        {
+            try
+            {
+                var res = await _auth.GetRoles();
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                _logger.Error("GetRoles Failed With Exception: {E}", e.ToString());
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// AddRoleToUser
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpPost("Role/{roleId:guid}/User/{userId:guid}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<string>> AddRoleToUser(Guid roleId, Guid userId)
+        {
+            try
+            {
+                var res = await _auth.AddRoleToUser(roleId, userId);
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                _logger.Error("AddRoleToUser Failed With Exception {E}", e.ToString());
+                throw;
+            }
         }
     }
 }

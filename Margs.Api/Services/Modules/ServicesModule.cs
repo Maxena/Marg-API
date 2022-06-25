@@ -36,7 +36,11 @@ public class ServicesModule : Module
         builder.Register(_ =>
         {
             var optionBuilder = new DbContextOptionsBuilder<PgDbContext>();
-            optionBuilder.UseNpgsql(Config.GetConnectionString("PgSql"));
+            optionBuilder.UseNpgsql(Config.GetConnectionString("PgSql"), options =>
+            {
+                options.EnableRetryOnFailure(5);
+                options.CommandTimeout(300);
+            });
             return new PgDbContext(optionBuilder.Options);
         }).InstancePerLifetimeScope();
 

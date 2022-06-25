@@ -221,7 +221,6 @@ namespace Margs.Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Profile")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")

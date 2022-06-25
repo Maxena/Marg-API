@@ -1,4 +1,4 @@
-namespace Margs.Api.Response;
+namespace Margs.Api.Response.Authentication;
 
 public class RegisterUserRes
 {

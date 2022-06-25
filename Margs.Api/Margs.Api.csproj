@@ -2,8 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DocumentationFileName>$(AssemblyName).xml</DocumentationFileName>
         <UserSecretsId>46045c00-222e-4ebd-9401-0113a0eafae7</UserSecretsId>
     </PropertyGroup>
 
@@ -12,6 +15,7 @@
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
         <PackageReference Include="AutofacSerilogIntegration" Version="5.0.0" />
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
             <PrivateAssets>all</PrivateAssets>
@@ -37,6 +41,7 @@
 
     <ItemGroup>
         <Folder Include="Controllers" />
+        <Folder Include="Response\Country" />
     </ItemGroup>
 
 </Project>
