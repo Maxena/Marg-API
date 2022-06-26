@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "NEqaK65IVgpsLtcmuJGYUBoEGOntKMDYRXmY4ON+3io=",
+  "Hash": "A3TKtuekpW1r9RwVdnbkQJjmLFvO5UBvY4AAOD6WzpY=",
   "Source": "Margs.Api",
   "BasePath": "_content/Margs.Api",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "Margs.Api\\wwwroot",
       "Source": "Margs.Api",
-      "ContentRoot": "D:\\Marg-API\\Margs.Api\\wwwroot\\",
+      "ContentRoot": "D:\\marg-api\\Margs.Api\\wwwroot\\",
       "BasePath": "_content/Margs.Api",
       "Pattern": "**"
     }
