@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "SfTukWRjSqkvyr/xqK6odOv9wKAY+LzoYKEXzmM7zR0=",
+  "Hash": "NEqaK65IVgpsLtcmuJGYUBoEGOntKMDYRXmY4ON+3io=",
   "Source": "Margs.Api",
   "BasePath": "_content/Margs.Api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Margs.Api\\wwwroot",
+      "Source": "Margs.Api",
+      "ContentRoot": "D:\\Marg-API\\Margs.Api\\wwwroot\\",
+      "BasePath": "_content/Margs.Api",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }

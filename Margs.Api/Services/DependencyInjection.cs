@@ -57,6 +57,8 @@ public static class DependencyInjection
         });
 
 
+        #region Jwt
+
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -103,10 +105,14 @@ public static class DependencyInjection
                 };
             });
 
+        #endregion
+
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         services.AddControllers()
             .AddJsonOptions(opt => opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+        #region swagger
 
         services.AddSwaggerGen(_ =>
         {
@@ -173,6 +179,8 @@ public static class DependencyInjection
 
             _.UseInlineDefinitionsForEnums();
         });
+
+        #endregion
 
         services.AddControllers();
         services.AddEndpointsApiExplorer();

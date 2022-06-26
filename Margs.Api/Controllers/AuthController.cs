@@ -24,20 +24,24 @@ namespace Margs.Api.Controllers
     {
         private readonly ILogger _logger;
         private readonly IAuthService _auth;
+        private readonly ICoreServices _core;
 
-        public AuthController(ILogger logger, IAuthService auth)
+        public AuthController(ILogger logger, IAuthService auth, ICoreServices core)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _auth = auth ?? throw new ArgumentNullException(nameof(auth));
+            _core = core ?? throw new ArgumentNullException(nameof(core));
         }
 
         [HttpGet("Test")]
         [AllowAnonymous]
         public IActionResult index()
         {
+            var guid = _core.GenerateImagePid("1.webp");
+
             _logger.Fatal("Fetal Test For Autofac Register Service");
             if (_logger.IsEnabled(LogEventLevel.Fatal))
-                return Ok();
+                return Ok(guid);
 
             return BadRequest();
         }
@@ -45,16 +49,33 @@ namespace Margs.Api.Controllers
         /// <summary>
         /// Register
         /// </summary>
+        /// <remarks>
+        /// Sample Request:
+        /// 
+        /// 
+        ///     Post /Register
+        ///     {
+        ///         "firstName" : "Amirhossein",
+        ///         "lastName"  : "sami",
+        ///         "mobile"    : "09028538715",
+        ///         "profile"   : "" can be null
+        ///         "gender"    : "Male",
+        ///         "cityId"    : 440 Hammedan CityID,
+        ///         "password"  : "some password that u want",
+        ///         "email"     : "some email that u want"
+        ///     }
+        /// </remarks>
         /// <param name="req"></param>
+        /// <param name="ct"></param>
         /// <returns></returns>
         /// <exception cref="RegisterFailedException"></exception>
         [HttpPost("Register")]
         [AllowAnonymous]
-        public async Task<ActionResult<RegisterUserRes>> Register(RegisterUserReq req)
+        public async Task<ActionResult<RegisterUserRes>> Register([FromForm] RegisterUserReq req, CancellationToken ct)
         {
             try
             {
-                var res = await _auth.Register(req);
+                var res = await _auth.Register(req, ct);
 
                 return Ok(res);
             }
@@ -68,14 +89,24 @@ namespace Margs.Api.Controllers
         /// <summary>
         /// Login
         /// </summary>
+        /// <remarks>
+        /// Sample Request :
+        ///
+        /// 
+        ///     Post /Login
+        ///     {
+        ///         "userName" : "09028538715", UserName Is Your Mobile Phone 
+        ///         "password" : "Your Password"
+        ///     }
+        /// </remarks>
         /// <param name="req"></param>
-        /// <returns></returns>
+        /// <returns>Return Token and UserName For User Who Login now</returns>
         /// <exception cref="LoginFailedException"></exception>
         [HttpPost("Login")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(LoginUserRes), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(LoginUserRes), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<LoginUserRes>> Login(LoginUserReq req)
+        public async Task<ActionResult<LoginUserRes>> Login([FromForm] LoginUserReq req)
         {
             try
             {
@@ -162,9 +193,21 @@ namespace Margs.Api.Controllers
         /// <summary>
         /// AddRoleToUser
         /// </summary>
+        /// <remarks>
+        /// Sample Request:
+        ///
+        ///     Post /AddRoleToUser
+        ///     {
+        ///         "roleId": 7774cb6f-6fc4-4faa-ac00-40461cf62a91
+        ///         "userId": 7774cb6f-6fc4-4faa-ac00-40461cf62a91
+        ///     }
+        /// </remarks>
         /// <param name="roleId"></param>
         /// <param name="userId"></param>
-        /// <returns></returns>
+        /// <response code="200">Return Ok Status Code</response>
+        /// <response code="401">if the request is unauthorized</response>
+        /// <response code="403">if the request is forbidden</response>
+        /// <returns>string if the operations will complete successfully</returns>
         [HttpPost("Role/{roleId:guid}/User/{userId:guid}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(StatusCodes.Status200OK)]

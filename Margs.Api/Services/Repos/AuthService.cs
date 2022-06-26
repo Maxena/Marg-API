@@ -1,3 +1,4 @@
+using Margs.Api.Common;
 using Margs.Api.Database.Context;
 using Margs.Api.Entities;
 using Margs.Api.Exceptions;
@@ -7,6 +8,7 @@ using Margs.Api.Response.Authentication;
 using Margs.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp;
 using ILogger = Serilog.ILogger;
 
 namespace Margs.Api.Services.Repos;
@@ -17,25 +19,31 @@ public class AuthService : IAuthService
     private readonly IDateTimeProvider _date;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
     private readonly ILogger _logger;
+    private readonly ICoreServices _core;
 
-    public AuthService(PgDbContext pg, IDateTimeProvider date, IJwtTokenGenerator jwtTokenGenerator, ILogger logger)
+    public AuthService(PgDbContext pg, IDateTimeProvider date, IJwtTokenGenerator jwtTokenGenerator, ILogger logger,
+        ICoreServices core)
     {
         _pg = pg ?? throw new ArgumentNullException(nameof(pg));
         _date = date ?? throw new ArgumentNullException(nameof(date));
         _jwtTokenGenerator = jwtTokenGenerator ?? throw new ArgumentNullException(nameof(jwtTokenGenerator));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _core = core ?? throw new ArgumentNullException(nameof(core));
     }
 
     /// <summary>
     /// Register a new user.
     /// </summary>
     /// <param name="req"></param>
+    /// <param name="ct"></param>
     /// <returns></returns>
     /// <exception cref="UserAlreadyExistException"></exception>
     /// <exception cref="JwtTokenFailedToRetrieve"></exception>
-    public async Task<RegisterUserRes> Register(RegisterUserReq req)
+    public async Task<RegisterUserRes> Register(RegisterUserReq req, CancellationToken ct)
     {
-        var isUserAlreadyExist = await _pg.Users.AnyAsync(x => x.Mobile == req.Mobile || x.Email == req.Email);
+        // Check If User is already exist in our datasource
+        var isUserAlreadyExist =
+            await _pg.Users.AnyAsync(x => x.Mobile == req.Mobile || x.Email == req.Email, cancellationToken: ct);
 
         if (isUserAlreadyExist)
         {
@@ -43,6 +51,7 @@ public class AuthService : IAuthService
             throw new UserAlreadyExistException();
         }
 
+        // register new user
         var registerNewUser = new User
         {
             FirstName = req.FirstName,
@@ -50,7 +59,7 @@ public class AuthService : IAuthService
             Mobile = req.Mobile,
             Email = req.Email,
             Password = BCrypt.Net.BCrypt.HashPassword(req.Password),
-            Profile = req.Profile,
+            Profile = null,
             IsActive = false,
             Gender = req.Gender,
             CityId = req.CityId,
@@ -60,16 +69,40 @@ public class AuthService : IAuthService
             LastLoginDateTime = _date.UtcNow,
         };
 
-        await _pg.Users.AddAsync(registerNewUser);
+        await _pg.Users.AddAsync(registerNewUser, cancellationToken: ct);
 
-        await _pg.SaveChangesAsync();
+        // add photo for new user if photo was uploaded
+        if (req.Profile!.Length > 0)
+        {
+            var imageName = req.Profile.FileName;
 
+            var imagePid = _core.GenerateImagePid(imageName);
+
+            var profile = req.Profile.OpenReadStream();
+
+            var path = $"/users/{registerNewUser.Id}";
+
+            Directory.CreateDirectory(path);
+
+            ImageHelper.SaveImageWithOriginalWidthAndHeight(profile, $"{path}{imagePid}", ct);
+
+            registerNewUser.Profile = path;
+        }
+
+        // update user record again to insert image path
+        _pg.Users.Update(registerNewUser);
+
+        //save changes to the database
+        await _pg.SaveChangesAsync(cancellationToken: ct);
+
+        //generate token 
         var token = _jwtTokenGenerator.GenerateToken(registerNewUser.Id, registerNewUser.Mobile,
             new List<string> { "NewUser", "Newbie" });
 
         if (token is null)
             throw new JwtTokenFailedToRetrieve();
 
+        //return response to the controller
         return new RegisterUserRes
         {
             UserId = registerNewUser.Id,
@@ -88,6 +121,7 @@ public class AuthService : IAuthService
     /// <exception cref="UserIsNotActiveException"></exception>
     public async Task<LoginUserRes> Login(LoginUserReq req)
     {
+        //check if we can find any user with given information 
         var user = await (from
                     users in _pg.Users
                 where req.UserName == users.Mobile
@@ -101,26 +135,31 @@ public class AuthService : IAuthService
             throw new UserNotFoundException();
         }
 
+        // verify password 
         if (!BCrypt.Net.BCrypt.Verify(req.Password, user.Password))
         {
             _logger.Error("password is not correct");
             throw new IncorrectPasswordException();
         }
 
+        // check if the user isActive or not
         if (!user.IsActive)
         {
             _logger.Error("user is not active");
             throw new UserIsNotActiveException();
         }
 
+        //generate token
         var token = _jwtTokenGenerator.GenerateToken(user.Id, user.Mobile, new List<string> { "loginUser" });
 
+        //update the user record and insert last login date time 
         user.LastLoginDateTime = _date.UtcNow;
 
         _pg.Users.Update(user);
 
         await _pg.SaveChangesAsync();
 
+        //return response
         return new LoginUserRes
         {
             FirstName = user.FirstName,
@@ -215,7 +254,6 @@ public class AuthService : IAuthService
 
         return "Role Added To The User Successfully";
     }
-
 
     /// <summary>
     /// Get Roles 

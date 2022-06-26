@@ -6,7 +6,7 @@ namespace Margs.Api.Services.Interfaces;
 
 public interface IAuthService
 {
-    Task<RegisterUserRes> Register(RegisterUserReq req);
+    Task<RegisterUserRes> Register(RegisterUserReq req, CancellationToken ct);
     Task<LoginUserRes> Login(LoginUserReq req);
     Task<List<UsersRes>> GetUsers();
     Task<UsersRes> GetUserById(Guid id);

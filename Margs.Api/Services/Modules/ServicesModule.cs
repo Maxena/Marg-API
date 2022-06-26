@@ -49,6 +49,8 @@ public class ServicesModule : Module
         builder.RegisterType<DateTimeProvider>().As<IDateTimeProvider>().SingleInstance();
         builder.RegisterLogger(); // for serilog to use it with autofac and we should use this package ==> AutofacSerilogIntegration
         builder.RegisterType<Seeder>().InstancePerDependency();
+        builder.RegisterType<CoreServices>().As<ICoreServices>().SingleInstance();
+        
         base.Load(builder);
     }
 }
