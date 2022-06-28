@@ -7,6 +7,7 @@ using Margs.Api.Requests.Authentication;
 using Margs.Api.Response;
 using Margs.Api.Response.Authentication;
 using Margs.Api.Services.Interfaces;
+using Margs.Api.Services.UOW;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,15 +24,18 @@ namespace Margs.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly ILogger _logger;
+        private readonly IUnitOfWork _uow;
         private readonly IAuthService _auth;
         private readonly ICoreServices _core;
 
-        public AuthController(ILogger logger, IAuthService auth, ICoreServices core)
+        public AuthController(ILogger logger, IAuthService auth, ICoreServices core, IUnitOfWork unitOfWork)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _auth = auth ?? throw new ArgumentNullException(nameof(auth));
             _core = core ?? throw new ArgumentNullException(nameof(core));
+            _uow = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
+
 
         [HttpGet("Test")]
         [AllowAnonymous]

@@ -10,7 +10,7 @@ public class User : BaseEntity<Guid>
     public string? Profile { get; set; }
     public string Email { get; set; } = null!;
     public Gender Gender { get; set; }
-    public int CityId { get; set; }
+    public Guid CityId { get; set; }
     public string Password { get; set; } = null!;
     public DateTime LastLoginDateTime { get; set; }
     public bool IsActive { get; set; }

@@ -1,28 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "D:\\marg-api\\Margs.Api\\Margs.Api.csproj": {}
+    "D:\\Marg-API\\Margs.Api\\Margs.Api.csproj": {}
   },
   "projects": {
-    "D:\\marg-api\\Margs.Api\\Margs.Api.csproj": {
+    "D:\\Marg-API\\Margs.Api\\Margs.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\marg-api\\Margs.Api\\Margs.Api.csproj",
+        "projectUniqueName": "D:\\Marg-API\\Margs.Api\\Margs.Api.csproj",
         "projectName": "Margs.Api",
-        "projectPath": "D:\\marg-api\\Margs.Api\\Margs.Api.csproj",
+        "projectPath": "D:\\Marg-API\\Margs.Api\\Margs.Api.csproj",
         "packagesPath": "C:\\Users\\a.sami\\.nuget\\packages\\",
-        "outputPath": "D:\\marg-api\\Margs.Api\\obj\\",
+        "outputPath": "D:\\Marg-API\\Margs.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\a.sami\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\a.sami\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -148,7 +150,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }

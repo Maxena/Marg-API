@@ -5,7 +5,12 @@ using Margs.Api.Database.Context;
 using Margs.Api.Services.Authentication;
 using Margs.Api.Services.DateTimeProviders;
 using Margs.Api.Services.Interfaces;
+using Margs.Api.Services.Interfaces.County;
+using Margs.Api.Services.Interfaces.User_Role;
 using Margs.Api.Services.Repos;
+using Margs.Api.Services.Repos.County;
+using Margs.Api.Services.Repos.User_Role;
+using Margs.Api.Services.UOW;
 using Microsoft.EntityFrameworkCore;
 using Serilog.Core;
 using ILogger = Serilog.ILogger;
@@ -51,6 +56,15 @@ public class ServicesModule : Module
         builder.RegisterType<Seeder>().InstancePerDependency();
         builder.RegisterType<CoreServices>().As<ICoreServices>().SingleInstance();
         
+        
+        builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerDependency();
+        builder.RegisterType<UserService>().As<UserService>().InstancePerLifetimeScope();
+        builder.RegisterType<RoleService>().As<IRoleService>().InstancePerLifetimeScope();
+        builder.RegisterType<CityService>().As<ICityService>().InstancePerLifetimeScope();
+        builder.RegisterType<AddressService>().As<IAddressService>().InstancePerLifetimeScope();
+        builder.RegisterType<ProvincService>().As<IProvinceService>().InstancePerLifetimeScope();
+
+
         base.Load(builder);
     }
 }
