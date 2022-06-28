@@ -53,8 +53,8 @@ namespace Margs.Api.Controllers
         /// </summary>
         /// <remarks>
         /// Sample Request:
-        /// 
-        /// 
+        ///
+        ///
         ///     Post /Register
         ///     {
         ///         "firstName" : "Amirhossein",
@@ -94,10 +94,10 @@ namespace Margs.Api.Controllers
         /// <remarks>
         /// Sample Request :
         ///
-        /// 
+        ///
         ///     Post /Login
         ///     {
-        ///         "userName" : "09028538715", UserName Is Your Mobile Phone 
+        ///         "userName" : "09028538715", UserName Is Your Mobile Phone
         ///         "password" : "Your Password"
         ///     }
         /// </remarks>

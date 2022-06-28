@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Marg-API\\Margs.Api\\Margs.Api.csproj": {}
+    "D:\\marg-api\\Margs.Api\\Margs.Api.csproj": {}
   },
   "projects": {
-    "D:\\Marg-API\\Margs.Api\\Margs.Api.csproj": {
+    "D:\\marg-api\\Margs.Api\\Margs.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Marg-API\\Margs.Api\\Margs.Api.csproj",
+        "projectUniqueName": "D:\\marg-api\\Margs.Api\\Margs.Api.csproj",
         "projectName": "Margs.Api",
-        "projectPath": "D:\\Marg-API\\Margs.Api\\Margs.Api.csproj",
+        "projectPath": "D:\\marg-api\\Margs.Api\\Margs.Api.csproj",
         "packagesPath": "C:\\Users\\a.sami\\.nuget\\packages\\",
-        "outputPath": "D:\\Marg-API\\Margs.Api\\obj\\",
+        "outputPath": "D:\\marg-api\\Margs.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tD6Xt5NPmzxaCLRzCZ3PFwbo2YQiW18a7TCvCXuwr2xBV9dwhcGYwo5YpoXA/WnivBuKSkBHFIOs+icEXxAvJw==",
+  "dgSpecHash": "I5Fl/ycHCZ/Se/wGS9kaBLZ8olmstrHC2EB8+YMvx6R1GrxvrzDV0tL3Cra4RgTEox5ltePPHUrlnWvU7BYtjw==",
   "success": true,
-  "projectFilePath": "D:\\Marg-API\\Margs.Api\\Margs.Api.csproj",
+  "projectFilePath": "D:\\marg-api\\Margs.Api\\Margs.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\a.sami\\.nuget\\packages\\autofac\\6.4.0\\autofac.6.4.0.nupkg.sha512",
     "C:\\Users\\a.sami\\.nuget\\packages\\autofac.extensions.dependencyinjection\\8.0.0\\autofac.extensions.dependencyinjection.8.0.0.nupkg.sha512",
