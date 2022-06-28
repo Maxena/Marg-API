@@ -41,13 +41,11 @@ namespace Margs.Api.Controllers
         [AllowAnonymous]
         public IActionResult index()
         {
-            var guid = _core.GenerateImagePid("1.webp");
+            var firstGuid = Guid.NewGuid();
+            var secondGuid = Guid.NewGuid();
+            _uow.UserRole.AddRoleToUser(firstGuid, secondGuid);
 
-            _logger.Fatal("Fetal Test For Autofac Register Service");
-            if (_logger.IsEnabled(LogEventLevel.Fatal))
-                return Ok(guid);
-
-            return BadRequest();
+            return Ok();
         }
 
         /// <summary>

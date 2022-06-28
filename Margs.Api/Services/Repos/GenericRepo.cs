@@ -3,6 +3,7 @@ using Margs.Api.Database.Context;
 using Margs.Api.Entities;
 using Margs.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using ILogger = Serilog.ILogger;
 
 namespace Margs.Api.Services.Repos;
 
@@ -11,10 +12,12 @@ public class GenericRepo<T> : IGenericRepo<T> where T : BaseEntity<Guid>
     private readonly PgDbContext _context;
 
     private readonly DbSet<T> _entities;
+    private readonly ILogger _logger;
 
-    public GenericRepo(PgDbContext context)
+    public GenericRepo(PgDbContext context, ILogger logger)
     {
         _context = context;
+        _logger = logger;
         _entities = context.Set<T>();
     }
 

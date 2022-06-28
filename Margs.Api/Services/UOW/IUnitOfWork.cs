@@ -12,5 +12,7 @@ public interface IUnitOfWork : IDisposable
     public IAddressService Address { get; }
     public ICityService City { get; }
     public IProvinceService Province { get; }
+    public IUserRoleService UserRole { get; }
+    public IDateTimeProvider DateTimeProvider { get; }
     Task<int> SaveChangesAsync();
 }
