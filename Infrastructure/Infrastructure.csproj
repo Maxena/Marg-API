@@ -7,12 +7,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Database\Configuration" />
       <Folder Include="DI" />
       <Folder Include="Exceptions" />
       <Folder Include="Authentication" />
-      <Folder Include="Extensions" />
       <Folder Include="Midllewares" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
+      <PackageReference Include="Pluralize.NET.Core" Version="1.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
 </Project>

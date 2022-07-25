@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\a.sami\\Desktop\\Project\\Death\\Domain\\Domain.csproj": {}
+    "C:\\Users\\a.sami\\Desktop\\Project\\Marg-API\\Domain\\Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\a.sami\\Desktop\\Project\\Death\\Domain\\Domain.csproj": {
+    "C:\\Users\\a.sami\\Desktop\\Project\\Marg-API\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\a.sami\\Desktop\\Project\\Death\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\a.sami\\Desktop\\Project\\Marg-API\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\a.sami\\Desktop\\Project\\Death\\Domain\\Domain.csproj",
+        "projectPath": "C:\\Users\\a.sami\\Desktop\\Project\\Marg-API\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\a.sami\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\a.sami\\Desktop\\Project\\Death\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\a.sami\\Desktop\\Project\\Marg-API\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\a.sami\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -41,6 +41,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.7, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.7, )"
