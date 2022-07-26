@@ -8,12 +8,12 @@ namespace Application.Services.Base;
 
 public class GenericRepo<T> : IGenericRepo<T> where T : BaseEntity
 {
-    protected readonly ApplicationDbContext _context;
+    protected readonly ApplicationDbContext Context;
     protected readonly DbSet<T> Entities;
 
     public GenericRepo(ApplicationDbContext context)
     {
-        _context = context;
+        Context = context;
         Entities = context.Set<T>();
     }
 

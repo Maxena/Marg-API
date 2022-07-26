@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Domain.Entities.Shared;
 using Domain.Interfaces;
+using Infrastructure.Database.Seed;
 using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +16,7 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
+        
         var assembly = typeof(IEntity).Assembly;
 
         modelBuilder.RegisterAllEntities<IEntity>(assembly);

@@ -98,6 +98,6 @@ public static class StringExtensions
 
     public static string NullIfEmpty(this string str)
     {
-        return str?.Length == 0 ? null : str;
+        return (str.Length == 0 ? null : str)!;
     }
 }
